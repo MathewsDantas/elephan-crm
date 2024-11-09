@@ -12,9 +12,22 @@ class ContactController {
     getContacts = async (req: Request, res: Response): Promise<void> => {
         try {
             const { email } = req.query;
-            console.log(email);
             const contact = await this.crmService.getContacts(email as string);
-            res.json(contact);
+
+            const contactFormatted = contact.map((contact) => {
+                return {
+                    id: contact.Id,
+                    name: contact.Name,
+                    email: contact.Email,
+                    cpf: contact.CPF,
+                    dataNascimento: contact.Birthday,
+                    avatarUrl: contact.AvatarUrl,
+                    createAt: contact.CreateDate,
+                    updateAt: contact.LastUpdateDate,
+                }
+            });
+
+            res.json(contactFormatted);
         } catch (error) {
             res.json({ error: (error as Error).message });
         }
@@ -24,7 +37,18 @@ class ContactController {
         try {
             const { contactId } = req.params;
             const deals = await this.crmService.getDealsByContactId(contactId);
-            res.json(deals);
+
+            const dealsFormatted = deals.map((deal) => {
+                return {
+                    id: deal.Id,
+                    title: deal.Title,
+                    amount: deal.Amount,
+                    startDate: deal.StartDate,
+                    status: deal.Status,
+                };
+            });
+
+            res.json(dealsFormatted);
         } catch (error) {
             res.json({ error: (error as Error).message });
         }

@@ -12,7 +12,15 @@ class PipelineController {
     getAllPipelines = async (req: Request, res: Response): Promise<void> => {
         try {
             const pipeline = await this.crmService.getAllPipelines();
-            res.json(pipeline);
+
+            const pipelineFormatted = pipeline.map((pipe) => {
+                return {
+                    id: pipe.Id,
+                    name: pipe.Name,
+                };
+            });
+
+            res.json(pipelineFormatted);
         } catch (error) {
             res.json({ error: (error as Error).message });
         }
@@ -23,7 +31,18 @@ class PipelineController {
             const { statusId } = req.query;
             const { pipelineId } = req.params;
             const deals = await this.crmService.getDealsByPipeline(pipelineId, statusId as string);
-            res.json(deals);
+
+            const dealsFormatted = deals.map((deal) => {
+                return {
+                    id: deal.Id,
+                    title: deal.Title,
+                    amount: deal.Amount,
+                    startDate: deal.StartDate,
+                    status: deal.Status,
+                };
+            });
+
+            res.json(dealsFormatted);
         } catch (error) {
             res.json({ error: (error as Error).message });
         }
