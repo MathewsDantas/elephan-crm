@@ -13,6 +13,7 @@ class CrmService {
   }
 
   setApiKey(apiKey: string): void {
+    console.log('apiKey', apiKey);
     this.authHeaders['User-Key'] = apiKey;
   }
 
@@ -50,7 +51,6 @@ class CrmService {
     if (statusId) {
       filter += ` and StatusId eq ${statusId}`;
     }
-    
     const response = await crmAPI.get(
         "/Deals", 
         { 
