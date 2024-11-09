@@ -1,9 +1,8 @@
-import axios from 'axios';
-
 import config from '../config';
+import crmAPI from './axios';
 
 class CrmService {
-  private authHeaders: { Authorization: string } = { Authorization: '' };
+  private authHeaders: { 'User-Key': string } = { 'User-Key': config.CRM_API_KEY || '' };
   private static instance: CrmService;
 
   static getInstance(): CrmService {
@@ -14,13 +13,12 @@ class CrmService {
   }
 
   setApiKey(apiKey: string): void {
-    this.authHeaders.Authorization = `Bearer ${apiKey}`;
+    this.authHeaders['User-Key'] = apiKey;
   }
 
   async getContactByEmail(email: string): Promise<any> {
-    const url = `${config.CRM_API_URL}/contacts`;
-    const response = await axios.get(
-        url, 
+    const response = await crmAPI.get(
+        '/Contacts', 
         { 
           headers: this.authHeaders, 
           params: { email }
@@ -29,25 +27,33 @@ class CrmService {
     return response.data;
   }
 
-  async getPipelines(): Promise<any> {
-    const url = `${config.CRM_API_URL}/pipelines`;
+  async getAllPipelines(): Promise<any> {
     try {
-      const response = await axios.get(url, { headers: this.authHeaders });
+      const response = await crmAPI.get('/Deals@Pipelines', { headers: this.authHeaders });
       return response.data;
     } catch (error) {
       throw new Error('Erro ao buscar pipelines');
     }
   }
 
-  async getDealsByPipeline(pipelineId: string): Promise<any> {
-    const url = `${config.CRM_API_URL}/deals`;
-    const response = await axios.get(
-        url, 
+  async getDealsByPipeline(pipelineId: string, statusId?: string): Promise<any> {
+
+    let filter = `PipelineId eq ${pipelineId}`;
+
+    if (statusId) {
+      filter += ` and StatusId eq ${statusId}`;
+    }
+    
+    const response = await crmAPI.get(
+        "/Deals", 
         { 
           headers: this.authHeaders, 
-          params: { pipelineId }
+          params: { 
+            $filter: filter
+          }
         }
     );
+
     return response.data;
   }
 }
