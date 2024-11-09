@@ -32,6 +32,9 @@ contactRoutes.get('/contacts', contactController.getContacts);
  *       200:
  *         description: Retorna "Hello, world!"
  * */
-contactRoutes.get('/contacts/:contactId/deals', contactController.getDealsByContactId);
+contactRoutes.get(
+  '/contacts/:contactId/deals',
+  contactController.getDealsByContactId
+);
 
 export default contactRoutes;

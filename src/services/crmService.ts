@@ -1,10 +1,19 @@
 import { AxiosResponse } from 'axios';
 import config from '../config';
 import crmAPI from './axios';
-import { IPloomesContact, IPloomesContactResponse, IPloomesDeal, IPloomesDealResponse, IPloomesPipeline, IPloomesPipelineResponse } from '../apis/ploomes/interfaces';
+import {
+  IPloomesContact,
+  IPloomesContactResponse,
+  IPloomesDeal,
+  IPloomesDealResponse,
+  IPloomesPipeline,
+  IPloomesPipelineResponse,
+} from '../apis/ploomes/interfaces';
 
 class CrmService {
-  private authHeaders: { 'User-Key': string } = { 'User-Key': config.CRM_API_KEY || '' };
+  private authHeaders: { 'User-Key': string } = {
+    'User-Key': config.CRM_API_KEY || '',
+  };
   private static instance: CrmService;
 
   static getInstance(): CrmService {
@@ -19,20 +28,20 @@ class CrmService {
   }
 
   async getContacts(email?: string): Promise<IPloomesContact[]> {
-    let filter
+    let filter;
 
-    if (email){
+    if (email) {
       filter = `Email eq '${email}'`;
     }
 
     const response: AxiosResponse<IPloomesContactResponse> = await crmAPI.get(
-        '/Contacts', 
-        { 
-          headers: this.authHeaders, 
-          params: { 
-            $filter: filter
-          }
-        }
+      '/Contacts',
+      {
+        headers: this.authHeaders,
+        params: {
+          $filter: filter,
+        },
+      }
     );
 
     return response.data.value;
@@ -40,28 +49,32 @@ class CrmService {
 
   async getAllPipelines(): Promise<IPloomesPipeline[]> {
     try {
-      const response: AxiosResponse<IPloomesPipelineResponse> = await crmAPI.get('/Deals@Pipelines', { headers: this.authHeaders });
+      const response: AxiosResponse<IPloomesPipelineResponse> =
+        await crmAPI.get('/Deals@Pipelines', { headers: this.authHeaders });
       return response.data.value;
     } catch (error) {
       throw new Error('Erro ao buscar pipelines');
     }
   }
 
-  async getDealsByPipeline(pipelineId: string, statusId?: string): Promise<IPloomesDeal[]> {
+  async getDealsByPipeline(
+    pipelineId: string,
+    statusId?: string
+  ): Promise<IPloomesDeal[]> {
     let filter = `PipelineId eq ${pipelineId}`;
 
     if (statusId) {
       filter += ` and StatusId eq ${statusId}`;
     }
     const response: AxiosResponse<IPloomesDealResponse> = await crmAPI.get(
-        "/Deals", 
-        { 
-          headers: this.authHeaders, 
-          params: { 
-            $filter: filter,
-            $expand: 'Status'
-          }
-        }
+      '/Deals',
+      {
+        headers: this.authHeaders,
+        params: {
+          $filter: filter,
+          $expand: 'Status',
+        },
+      }
     );
 
     return response.data.value;
@@ -71,15 +84,15 @@ class CrmService {
     let filter = `ContactId eq ${contactId}`;
 
     const response: AxiosResponse<IPloomesDealResponse> = await crmAPI.get(
-        `/Deals`, 
-        { 
-          headers: this.authHeaders,
-          params: { 
-            $filter: filter,
-            $expand: 'Status'
-          }
-        }
-      );
+      `/Deals`,
+      {
+        headers: this.authHeaders,
+        params: {
+          $filter: filter,
+          $expand: 'Status',
+        },
+      }
+    );
     return response.data.value;
   }
 }

@@ -31,6 +31,9 @@ pipelineRoutes.get('/pipelines', pipelineController.getAllPipelines);
  *       200:
  *         description: Retorna "Hello, world!"
  * */
-pipelineRoutes.get('/pipelines/:pipelineId/deals', pipelineController.getDealsByPipeline);
+pipelineRoutes.get(
+  '/pipelines/:pipelineId/deals',
+  pipelineController.getDealsByPipeline
+);
 
 export default pipelineRoutes;

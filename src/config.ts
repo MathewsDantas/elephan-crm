@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-dotenv.config(); 
+dotenv.config();
 
 const config = {
   CRM_API_URL: process.env.CRM_API_URL,
