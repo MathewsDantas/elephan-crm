@@ -1,5 +1,8 @@
+import dotenv from 'dotenv';
+dotenv.config(); 
+
 const config = {
-  CRM_API_URL: process.env.CRM_API_URL || 'https://api.fakecompany.com',
+  CRM_API_URL: process.env.CRM_API_URL,
   CACHE_EXPIRATION: 300, // em segundos (5 minutos)
   PORT: process.env.PORT || 3000,
 };
