@@ -16,12 +16,20 @@ class CrmService {
     this.authHeaders['User-Key'] = apiKey;
   }
 
-  async getContactByEmail(email: string): Promise<any> {
+  async getContacts(email?: string): Promise<any> {
+    let filter
+
+    if (email){
+      filter = `Email eq '${email}'`;
+    }
+
     const response = await crmAPI.get(
         '/Contacts', 
         { 
           headers: this.authHeaders, 
-          params: { email }
+          params: { 
+            $filter: filter
+          }
         }
     );
     return response.data;
@@ -37,7 +45,6 @@ class CrmService {
   }
 
   async getDealsByPipeline(pipelineId: string, statusId?: string): Promise<any> {
-
     let filter = `PipelineId eq ${pipelineId}`;
 
     if (statusId) {
@@ -54,6 +61,21 @@ class CrmService {
         }
     );
 
+    return response.data;
+  }
+
+  async getDealsByContactId(contactId: string): Promise<any> {
+    let filter = `ContactId eq ${contactId}`;
+
+    const response = await crmAPI.get(
+        `/Deals`, 
+        { 
+          headers: this.authHeaders,
+          params: { 
+            $filter: filter
+          }
+        }
+      );
     return response.data;
   }
 }
