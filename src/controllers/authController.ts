@@ -13,7 +13,7 @@ class AuthController {
 
     const crmService = CrmService.getInstance();
     crmService.setApiKey(apiKey as string);
-    res.json({ message: 'Conectado com sucesso' });
+    res.status(200).json({ message: 'Conectado com sucesso' });
   };
 }
 

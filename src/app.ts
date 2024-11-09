@@ -5,8 +5,11 @@ import swaggerUi from 'swagger-ui-express';
 import authRoutes from './routes/authRoutes';
 import pipelineRoutes from './routes/pipelineRoutes';
 import contactRoutes from './routes/contactRoutes';
+import { requestLogger } from './logger';
 
 const app = express();
+
+app.use(requestLogger);
 
 const swaggerOptions = {
   definition: {
@@ -24,14 +27,11 @@ const swaggerOptions = {
   },
   apis: ['./src/routes/*.ts'],
 };
-
 const swaggerDocs = swaggerJsdoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 const apiUrl = '/api/v1';
-
 app.use(apiUrl, express.json());
-
 app.use(apiUrl, authRoutes);
 app.use(apiUrl, pipelineRoutes);
 app.use(apiUrl, contactRoutes);

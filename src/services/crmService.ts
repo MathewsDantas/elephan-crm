@@ -12,7 +12,7 @@ import {
 
 class CrmService {
   private authHeaders: { 'User-Key': string } = {
-    'User-Key': config.CRM_API_KEY || '',
+    'User-Key': '',
   };
   private static instance: CrmService;
 
