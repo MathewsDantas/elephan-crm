@@ -21,6 +21,7 @@ export const requestLogger = (
   next: NextFunction
 ) => {
   res.on('finish', () => {
+    // finish é um evento que ocorre quando a resposta é enviada
     logger.info(`${req.method} ${req.path} status: ${res.statusCode}`);
   });
   next();

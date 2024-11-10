@@ -1,19 +1,27 @@
 import { Request, Response } from 'express';
 
 import CrmService from '../services/crmService';
+import { BadRequestError } from '../helpers/api-erros';
 
 class AuthController {
-  connectCRM = (req: Request, res: Response): void => {
+  private crmService: CrmService;
+
+  constructor() {
+    this.crmService = CrmService.getInstance();
+  }
+
+  connectCRM = async (req: Request, res: Response) => {
     const { apiKey } = req.query;
 
     if (!apiKey) {
-      res.status(400).send('apiKey é obrigatório');
-      return;
+      throw new BadRequestError('API Key não informada');
     }
 
-    const crmService = CrmService.getInstance();
-    crmService.setApiKey(apiKey as string);
-    res.status(200).json({ message: 'Conectado com sucesso' });
+    await this.crmService.authenticate(apiKey as string);
+
+    this.crmService.setApiKey(apiKey as string);
+
+    res.json({ message: 'Conexão realizada com sucesso' });
   };
 }
 

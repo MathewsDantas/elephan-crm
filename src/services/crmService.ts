@@ -27,6 +27,15 @@ class CrmService {
     this.authHeaders['User-Key'] = apiKey;
   }
 
+  async authenticate(apiKey: string): Promise<void> {
+    console.log('apiKey', apiKey);
+    await crmAPI.get('/Self', {
+      headers: {
+        'User-Key': apiKey,
+      },
+    });
+  }
+
   async getContacts(email?: string): Promise<IPloomesContact[]> {
     let filter;
 
@@ -48,13 +57,11 @@ class CrmService {
   }
 
   async getAllPipelines(): Promise<IPloomesPipeline[]> {
-    try {
-      const response: AxiosResponse<IPloomesPipelineResponse> =
-        await crmAPI.get('/Deals@Pipelines', { headers: this.authHeaders });
-      return response.data.value;
-    } catch (error) {
-      throw new Error('Erro ao buscar pipelines');
-    }
+    const response: AxiosResponse<IPloomesPipelineResponse> = await crmAPI.get(
+      '/Deals@Pipelines',
+      { headers: this.authHeaders }
+    );
+    return response.data.value;
   }
 
   async getDealsByPipeline(
@@ -82,7 +89,6 @@ class CrmService {
 
   async getDealsByContactId(contactId: string): Promise<IPloomesDeal[]> {
     let filter = `ContactId eq ${contactId}`;
-
     const response: AxiosResponse<IPloomesDealResponse> = await crmAPI.get(
       `/Deals`,
       {
