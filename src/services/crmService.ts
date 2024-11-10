@@ -28,7 +28,6 @@ class CrmService {
   }
 
   async authenticate(apiKey: string): Promise<void> {
-    console.log('apiKey', apiKey);
     await crmAPI.get('/Self', {
       headers: {
         'User-Key': apiKey,
