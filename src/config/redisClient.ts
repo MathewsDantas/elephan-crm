@@ -1,7 +1,7 @@
 import { createClient } from 'redis';
 
 const redisClient = createClient({
-  url: `redis://localhost:6379`,
+  url: `redis://red-csoitc68ii6s73963kv0:6379`,
 });
 
 redisClient.on('connect', () => {
