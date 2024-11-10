@@ -41,7 +41,6 @@ class CrmService {
     if (email) {
       filter = `Email eq '${email}'`;
     }
-
     const response: AxiosResponse<IPloomesContactResponse> = await crmAPI.get(
       '/Contacts',
       {

@@ -13,7 +13,6 @@ class ContactController {
   getContacts = async (req: Request, res: Response): Promise<void> => {
     const { email } = req.query;
     const contacts = await this.crmService.getContacts(email as string);
-    console.log(contacts);
 
     if (email && contacts.length === 0) {
       throw new BadRequestError('Contato não encontrado');
