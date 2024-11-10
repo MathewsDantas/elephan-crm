@@ -1,21 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import { createLogger, format, transports } from 'winston';
+import { logger } from '../config/logger';
 
-export const logger = createLogger({
-  level: 'info',
-  format: format.combine(
-    format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
-    format.printf(
-      ({ level, message, timestamp }) => `${timestamp} ${level}: ${message}`
-    )
-  ),
-  transports: [
-    new transports.Console(),
-    new transports.File({ filename: 'logs/app.log' }),
-  ],
-});
-
-export const requestLogger = (
+export const requestLoggerMiddleware = (
   req: Request,
   res: Response,
   next: NextFunction

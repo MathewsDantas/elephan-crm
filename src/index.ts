@@ -1,6 +1,6 @@
-import config from './config';
+import config from './config/config';
 import app from './app';
-import { logger } from './middlewares/logger';
+import { logger } from './config/logger';
 
 app.listen(config.PORT, () => {
   logger.info(`Server está rodando em http://localhost:${config.PORT}`);

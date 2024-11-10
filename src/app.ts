@@ -6,13 +6,13 @@ import swaggerUi from 'swagger-ui-express';
 import authRoutes from './routes/authRoutes';
 import pipelineRoutes from './routes/pipelineRoutes';
 import contactRoutes from './routes/contactRoutes';
-import { requestLogger } from './middlewares/logger';
+import { requestLoggerMiddleware } from './middlewares/logger';
 import { errorMiddleware } from './middlewares/error';
 import { ApiError } from './helpers/api-erros';
 
 const app = express();
 
-app.use(requestLogger); // Middleware para logar as requisições
+app.use(requestLoggerMiddleware); // Middleware para logar as requisições
 
 const swaggerOptions = {
   definition: {

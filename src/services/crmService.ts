@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import config from '../config';
+import config from '../config/config';
 import crmAPI from './axios';
 import {
   IPloomesContact,
