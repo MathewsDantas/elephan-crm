@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
 
 import CrmService from '../services/crmService';
-import { cacheMiddleware } from '../middlewares/cache';
+import { cacheData } from '../helpers/cache';
+import config from '../config/config';
 
 class PipelineController {
   private crmService: CrmService;
@@ -13,7 +14,7 @@ class PipelineController {
   getAllPipelines = async (req: Request, res: Response): Promise<void> => {
     const pipeline = await this.crmService.getAllPipelines();
 
-    cacheMiddleware('pipelines')(req, res, async () => {
+    cacheData('pipelines', config.CACHE_EXPIRATION, res, async () => {
       const pipelineFormatted = pipeline.map((pipe) => {
         return {
           id: pipe.Id,
@@ -21,7 +22,7 @@ class PipelineController {
         };
       });
 
-      res.json(pipelineFormatted);
+      return pipelineFormatted;
     });
   };
 
@@ -29,7 +30,11 @@ class PipelineController {
     const { statusId } = req.query;
     const { pipelineId } = req.params;
 
-    await cacheMiddleware(`deals?pipelineId=${pipelineId}`)(req, res, async () => {
+    const cacheKey = statusId
+      ? `deals?pipelineId=${pipelineId}&statusId=${statusId}`
+      : `deals?pipelineId=${pipelineId}`;
+
+    await cacheData(cacheKey, config.CACHE_EXPIRATION, res, async () => {
       const deals = await this.crmService.getDealsByPipeline(
         pipelineId,
         statusId as string
@@ -45,7 +50,7 @@ class PipelineController {
         };
       });
 
-      res.json(dealsFormatted);
+      return dealsFormatted;
     });
   };
 }
