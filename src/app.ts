@@ -16,7 +16,6 @@ const app = express();
 // ------- MIDDLEWARE DE LOG -------
 app.use(requestLoggerMiddleware);
 
-
 // ------- CORS -------
 const corsOptions = {
   origin: '*',
@@ -24,7 +23,6 @@ const corsOptions = {
   allowedHeaders: ['Content-Type', 'Authorization'],
 };
 app.use(cors(corsOptions));
-
 
 // ------- SWAGGER -------
 const swaggerOptions = {
@@ -46,14 +44,12 @@ const swaggerOptions = {
 const swaggerDocs = swaggerJsdoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-
 // ------- ROTAS -------
 const apiUrl = '/api/v1';
 app.use(apiUrl, express.json());
 app.use(apiUrl, authRoutes);
 app.use(apiUrl, pipelineRoutes);
 app.use(apiUrl, contactRoutes);
-
 
 // ------- MIDDLEWARE DE ERRO -------
 app.use(

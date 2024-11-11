@@ -1,11 +1,12 @@
 import { Response } from 'express';
 import redisClient, { ensureRedisConnection } from '../config/redisClient';
+import config from '../config/config';
 
 export const cacheData = async (
   key: string,
-  expiration: string | number,
   res: Response,
-  callback: Function
+  callback: Function,
+  expiration: string | number = config.CACHE_EXPIRATION
 ) => {
   await ensureRedisConnection(); // Garante que a conexão com o Redis está estabelecida
 
