@@ -1,7 +1,9 @@
 import { createClient } from 'redis';
 
+import config from './config';
+
 const redisClient = createClient({
-  url: `redis://redis:6379`, // Conexão com o Redis no Docker
+  url: config.REDIS_URL,
 });
 
 redisClient.on('connect', () => {

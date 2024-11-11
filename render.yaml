@@ -1,0 +1,10 @@
+services:
+  - name: redis
+    type: redis
+    plan: free # Use o plano gratuito ou escolha outro plano adequado
+
+  - name: express-dev
+    type: web
+    env: docker
+    plan: free # ou use um plano diferente se necessário
+    dockerfilePath: Dockerfile.dev
