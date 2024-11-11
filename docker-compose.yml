@@ -24,18 +24,6 @@ services:
     depends_on:
       - redis
 
-  express-prod:
-    build:
-      context: .
-      dockerfile: Dockerfile.prod
-    container_name: express-prod
-    ports:
-      - '3000:3000'
-    networks:
-      - app-network
-    depends_on:
-      - redis
-
 networks:
   app-network:
     driver: bridge

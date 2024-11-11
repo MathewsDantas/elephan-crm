@@ -1,7 +1,9 @@
 import { createClient } from 'redis';
 
+import config from './config';
+
 const redisClient = createClient({
-  url: `redis://red-csoitc68ii6s73963kv0:6379`,
+  url: config.REDIS_URL,
 });
 
 redisClient.on('connect', () => {
